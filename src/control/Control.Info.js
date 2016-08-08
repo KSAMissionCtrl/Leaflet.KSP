@@ -7,7 +7,10 @@
 L.KSP.Control.Info = L.Control.extend({
 	options: {
 		position: "bottomleft",
-		dms: false
+		dms: false,
+		elevInfo: true,
+		biomeInfo: true,
+		slopeInfo: true
 	},
 
 	_decFormatter: function(latlng) {
@@ -38,17 +41,23 @@ L.KSP.Control.Info = L.Control.extend({
 		L.DomUtil.create("br", null, this._container);
 		this._position.innerHTML = "Unavailable<br>Unavailable";
 		this._position.onclick = function(){ self._togglePositionFormat(); };
-		this._biome = L.DomUtil.create("span", "biome-name", this._container);
-		L.DomUtil.create("br", null, this._container);
+    if (this.options.biomeInfo) {
+      this._biome = L.DomUtil.create("span", "biome-name", this._container);
+      map.on("biomeover", this._onBiomeChange, this);
+      L.DomUtil.create("br", null, this._container);
+    }
 		//this._container.innerHTML += "Elevation: ";
-		this._elevation = L.DomUtil.create("span", "elevation", this._container);
-		L.DomUtil.create("br", null, this._container);
-		this._slope = L.DomUtil.create("span", "slope", this._container);
+    if (this.options.elevInfo) {
+      this._elevation = L.DomUtil.create("span", "elevation", this._container);
+      L.DomUtil.create("br", null, this._container);
+      map.on("elevationover", this._onElevationChange, this);
+    }
+    if (this.options.slopeInfo) {
+      this._slope = L.DomUtil.create("span", "slope", this._container);
+      map.on("slopeover", this._onSlopeChange, this);
+    }
 		this._reset();
 		map.on("bodychangeend", this._reset, this);
-		map.on("biomeover", this._onBiomeChange, this);
-		map.on("elevationover", this._onElevationChange, this);
-		map.on("slopeover", this._onSlopeChange, this);
 		map.on("mousemove", this._onMouseMove, this);
 
 		return this._container;
@@ -93,9 +102,9 @@ L.KSP.Control.Info = L.Control.extend({
 	},
 
 	_reset: function () {
-		this._biome.innerHTML = "Biome Unavailable";
-		this._elevation.innerHTML = "Elevation: None";
-		this._slope.innerHTML = "Slope: None";
+		if (this.options.biomeInfo) { this._biome.innerHTML = "Biome Unavailable"; }
+		if (this.options.elevInfo) { this._elevation.innerHTML = "Elevation: None"; }
+    if (this.options.slopeInfo) { this._slope.innerHTML = "Slope: None"; }
 	}
 });
 
