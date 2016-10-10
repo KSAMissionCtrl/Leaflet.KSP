@@ -260,7 +260,7 @@ L.KSP.UtfGrid = L.UtfGrid.extend({
 		TYPE_ELEVATION: 0,
 		TYPE_SLOPE: 1,
 		TYPE_BIOME: 2,
-		DEFAULT_URL: "http://static.kerbalmaps.com/{body}/{style}/{z}/{x}/{y}.json"
+		DEFAULT_URL: "http://web.archive.org/web/20160317152749/http://static.kerbalmaps.com/{body}/{style}/{z}/{x}/{y}.json"
 	},
 
 	options: {
